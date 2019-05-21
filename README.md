@@ -17,3 +17,7 @@ With:
 - isDeleted: a boolean if the file must be deleted
 - isNewFile: a boolean if the file is new and must be uploaded
 - And all other attributes you added yourself to the `v-mdodel`
+
+
+props:
+- `max` number (max count of uploadable items)

@@ -1,7 +1,7 @@
 <template>
     <div id="drop-area" @drop.prevent="handleDrop" @dragover.prevent>
         <form ref="form">
-            <input ref="upload" type="file" multiple @change="handleInput">
+            <input ref="upload" type="file" :multiple="max !== 1" @change="handleInput">
             <v-layout row wrap>
                 <v-flex xs3
                         pa-1
@@ -15,7 +15,7 @@
                     </v-badge>
                     <v-img :src="file.preview" height="150px"></v-img>
                 </v-flex>
-                <v-flex xs3 pa-1 class="uploadWrapper">
+                <v-flex xs3 pa-1 class="uploadWrapper" v-if="this.files.length < this.max">
                     <div class="border">
                         <v-btn
                             @click="$refs.upload.click()"
@@ -43,6 +43,10 @@
             };
         },
         props: {
+            max: {
+                default: 0,
+                type: Number,
+            },
             value: {
                 default: () => {
                     return [];
@@ -60,13 +64,16 @@
         },
         methods: {
             handleDrop(e) {
-                let files = e.dataTransfer.files;
-                this.handleFiles(files);
-
+                if (this.files.length < this.max) {
+                    let files = e.dataTransfer.files;
+                    this.handleFiles(files);
+                }
             },
             handleInput(e) {
-                let files = e.target.files;
-                this.handleFiles(files);
+                if (this.files.length < this.max) {
+                    let files = e.target.files;
+                    this.handleFiles(files);
+                }
             },
             handleFiles(files) {
                 if (files.length > 0) {
