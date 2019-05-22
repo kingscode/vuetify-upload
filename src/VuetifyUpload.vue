@@ -1,7 +1,7 @@
 <template>
     <div id="drop-area" @drop.prevent="handleDrop" @dragover.prevent>
         <form ref="form">
-            <input ref="upload" type="file" :multiple="max !== 1" @change="handleInput">
+            <input ref="upload" :accept="accept" type="file" :multiple="max !== 1" @change="handleInput">
             <v-layout row wrap>
                 <v-flex xs3
                         pa-1
@@ -53,6 +53,10 @@
                 },
                 type: Array,
             },
+            accept: {
+                default: '',
+                type: String
+            }
         },
         watch: {
             value() {
