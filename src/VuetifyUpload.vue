@@ -8,7 +8,7 @@
                         v-for="(file, index) in files"
                         class="preview"
                         v-if="typeof file.isDeleted !== undefined && file.isDeleted !== true">
-                    <v-badge left color="red">
+                    <v-badge v-if="canDelete" left color="red">
                         <div slot="badge" @click="deleteFile(index)">
                             <v-icon color="white">fa-trash</v-icon>
                         </div>
@@ -75,6 +75,10 @@
                 default: 'xs3',
                 type: String,
             },
+            canDelete: {
+                default: false,
+                type: Boolean
+            }
         },
         watch: {
             value() {
