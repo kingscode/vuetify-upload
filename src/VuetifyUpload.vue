@@ -50,12 +50,12 @@
             canUploadNewFile() {
                 let count = 0;
                 this.files.forEach((file) => {
-                    if(typeof file.isDeleted === 'undefined' || file.isDeleted === false) {
-                        count ++;
+                    if (typeof file.isDeleted === 'undefined' || file.isDeleted === false) {
+                        count++;
                     }
                 });
                 return count < this.max;
-            }
+            },
         },
         props: {
             max: {
@@ -63,6 +63,7 @@
                 type: Number,
             },
             value: {
+                type: Array,
                 default: () => {
                     return [];
                 },
@@ -77,24 +78,16 @@
             },
             canDelete: {
                 default: false,
-                type: Boolean
-            }
+                type: Boolean,
+            },
         },
         watch: {
             value() {
-                if (Array.isArray(this.value)) {
-                    this.files = this.value;
-                    return;
-                }
-                this.files = [this.value];
+                this.files = this.value;
             },
         },
         created() {
-            if (Array.isArray(this.value)) {
-                this.files = this.value;
-                return;
-            }
-            this.files = [this.value];
+            this.files = this.value;
         },
         methods: {
             handleDrop(e) {
@@ -120,11 +113,7 @@
                     Promise.all(promises).then((files) => {
                         this.files.push(...files);
                         this.$refs.form.reset();
-                        if (this.max === 1) {
-                            this.$emit('input', this.files[0]);
-                        } else {
-                            this.$emit('input', this.files);
-                        }
+                        this.$emit('input', this.files);
                     });
 
                 }
@@ -178,6 +167,7 @@
                 }
                 this.$set(this.files[fileIndex], 'isDeleted', true);
                 this.$emit('input', this.files);
+                this.$emit('fileDeleted', this.files[fileIndex]);
             },
         },
     };
