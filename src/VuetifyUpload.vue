@@ -176,7 +176,7 @@
             },
             rotateBase64Image(base64data, degrees, callback) {
                 let canvas = document.createElement('canvas');
-                let ctx = canvas.getContext('2d');
+                let context = canvas.getContext('2d');
 
                 let image = new Image();
                 image.src = base64data;
@@ -195,9 +195,9 @@
                     //use translated width and height for new canvas
                     canvas.width = h * s + w * c;
                     canvas.height = h * c + w * s;
-                    ctx.translate(canvas.width / 2, canvas.height / 2);
-                    ctx.rotate(degrees * Math.PI / 180);
-                    ctx.drawImage(image, -image.width / 2, -image.height / 2);
+                    context.translate(canvas.width / 2, canvas.height / 2);
+                    context.rotate(degrees * Math.PI / 180);
+                    context.drawImage(image, -image.width / 2, -image.height / 2);
                     callback(canvas.toDataURL());
                 };
 
@@ -222,8 +222,7 @@
                     default:
                         return this.$vuetify.icons.file;
                 }
-            }
-            ,
+            },
             deleteFile(fileIndex) {
                 if (this.files[fileIndex].isNewFile) {
                     this.files.splice(fileIndex, 1);
@@ -232,11 +231,9 @@
                 this.$set(this.files[fileIndex], 'isDeleted', true);
                 this.$emit('input', this.files);
                 this.$emit('fileDeleted', this.files[fileIndex]);
-            }
-            ,
+            },
         },
-    }
-    ;
+    };
 </script>
 
 <style scoped lang="scss">
