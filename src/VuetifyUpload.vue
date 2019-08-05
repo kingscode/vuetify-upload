@@ -126,12 +126,12 @@
                 const validImageTypes = ['image/gif', 'image/jpeg', 'image/png'];
                 return new Promise((resolve) => {
                     if (validImageTypes.includes(file.type)) {
+                        //this reader is for creating the base64
                         let reader = new FileReader();
                         reader.onload = () => {
-                            console.log('aa');
+                            // this reader is for getting the exif data, in the exif data we'll find the orientation
                             let exifReader = new FileReader();
                             exifReader.onload = () => {
-                                console.log('bb');
                                 let exif = EXIF.readFromBinaryFile(exifReader.result);
                                 let rotation = {
                                     3: 180,
@@ -157,7 +157,6 @@
 
                                 }
                             };
-                            console.log('zz');
                             exifReader.readAsArrayBuffer(file);
 
                         };
