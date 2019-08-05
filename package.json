@@ -26,6 +26,7 @@
         "test:unit": "vue-cli-service test:unit"
     },
     "dependencies": {
+        "exif-js": "^2.3.0",
         "vue": "^2.5.17",
         "vuetify": "^1.5.12"
     },
