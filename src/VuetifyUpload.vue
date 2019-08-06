@@ -13,7 +13,9 @@
                             <v-icon color="white">fa-trash</v-icon>
                         </div>
                     </v-badge>
-                    <v-img v-if="file.preview !== null" :src="file.preview" height="150px"></v-img>
+                    <v-img v-if="file.preview !== null"
+                           :src="file.preview"
+                           height="150px"></v-img>
                     <v-flex v-else>
                         <v-icon style="margin-top:70px;">{{ fileTypeToIcon(file.type)}}</v-icon>
                         <span class="file-name" v-if="typeof file.name !== 'undefined' && file.name !== null">{{file.name}}</span>
@@ -39,6 +41,8 @@
 </template>
 
 <script>
+    import * as EXIF from 'exif-js';
+
     export default {
         name: 'vuetify-upload',
         data() {
@@ -122,11 +126,42 @@
                 const validImageTypes = ['image/gif', 'image/jpeg', 'image/png'];
                 return new Promise((resolve) => {
                     if (validImageTypes.includes(file.type)) {
+                        //this reader is for creating the base64
                         let reader = new FileReader();
                         reader.onload = () => {
-                            resolve({preview: reader.result, isDeleted: false, isNewFile: true, file: file});
+                            // this reader is for getting the exif data, in the exif data we'll find the orientation
+                            let exifReader = new FileReader();
+                            exifReader.onload = () => {
+                                let exif = EXIF.readFromBinaryFile(exifReader.result);
+                                let rotation = {
+                                    3: 180,
+                                    6: 90,
+                                    8: 270,
+                                };
+                                if (rotation[exif.Orientation]) {
+                                    this.rotateBase64Image(reader.result, rotation[exif.Orientation], (image) => {
+                                        resolve({
+                                            preview: image,
+                                            isDeleted: false,
+                                            isNewFile: true,
+                                            file: file,
+                                        });
+                                    });
+                                } else {
+                                    resolve({
+                                        preview: reader.result,
+                                        isDeleted: false,
+                                        isNewFile: true,
+                                        file: file,
+                                    });
+
+                                }
+                            };
+                            exifReader.readAsArrayBuffer(file);
+
                         };
                         reader.readAsDataURL(file);
+
                     } else {
                         resolve({
                             preview: null,
@@ -138,6 +173,34 @@
                         });
                     }
                 });
+            },
+            rotateBase64Image(base64data, degrees, callback) {
+                let canvas = document.createElement('canvas');
+                let context = canvas.getContext('2d');
+
+                let image = new Image();
+                image.src = base64data;
+                image.onload = function () {
+                    let w = image.width;
+                    let h = image.height;
+                    let rads = degrees * Math.PI / 180;
+                    let c = Math.cos(rads);
+                    let s = Math.sin(rads);
+                    if (s < 0) {
+                        s = -s;
+                    }
+                    if (c < 0) {
+                        c = -c;
+                    }
+                    //use translated width and height for new canvas
+                    canvas.width = h * s + w * c;
+                    canvas.height = h * c + w * s;
+                    context.translate(canvas.width / 2, canvas.height / 2);
+                    context.rotate(degrees * Math.PI / 180);
+                    context.drawImage(image, -image.width / 2, -image.height / 2);
+                    callback(canvas.toDataURL());
+                };
+
             },
             fileTypeToIcon(type) {
                 switch (type) {
