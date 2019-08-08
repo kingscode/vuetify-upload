@@ -1,5 +1,5 @@
-# vuetify-upload
-a vuetify multi file upload with deletions and file previews
+# Vuetify Upload
+A Vuetify multi file upload with deletions and file previews.
 
 Install the app in your main.js
     
@@ -13,11 +13,10 @@ Just add the component on the place you need it to be
 And now your files contains an object with all the files that you'll need to add or delete
 With:
 
-- file which contains the file itself
-- isDeleted: a boolean if the file must be deleted
-- isNewFile: a boolean if the file is new and must be uploaded
-- And all other attributes you added yourself to the `v-mdodel`
-
+- `file` which contains the file itself.
+- `isDeleted`: a boolean if the file must be deleted.
+- `isNewFile`: a boolean if the file is new and must be uploaded.
+- And all other attributes you added yourself to the `v-model`.
 
 props:
-- `max` number (max count of uploadable items)
+- `max`: maximum number of uploadable items.
