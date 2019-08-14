@@ -28,7 +28,7 @@
     "dependencies": {
         "exif-js": "^2.3.0",
         "vue": "^2.5.17",
-        "vuetify": "^1.5.12"
+        "vuetify": "^2.0.0"
     },
     "devDependencies": {
         "@vue/cli-plugin-babel": "^3.6.0",
