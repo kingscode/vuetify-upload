@@ -2,7 +2,7 @@
     <div id="drop-area" @drop.prevent="handleDrop" @dragover.prevent>
         <form ref="form">
             <input ref="upload" :accept="accept" type="file" :multiple="max !== 1" @change="handleInput">
-            <v-layout row wrap>
+            <v-layout>
                 <v-flex :class="previewClass"
                         pa-1
                         v-for="(file, index) in files"
