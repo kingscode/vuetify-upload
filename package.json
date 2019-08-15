@@ -1,6 +1,6 @@
 {
     "name": "@kingscode/vuetify-upload",
-    "version": "0.5.0",
+    "version": "0.6.0",
     "description": "a vuetify multi file upload with deletions and file previews",
     "repository": {
         "type": "git",
@@ -28,7 +28,7 @@
     "dependencies": {
         "exif-js": "^2.3.0",
         "vue": "^2.5.17",
-        "vuetify": "^1.5.12"
+        "vuetify": "^2.0.0"
     },
     "devDependencies": {
         "@vue/cli-plugin-babel": "^3.6.0",
