@@ -87,11 +87,11 @@
         },
         watch: {
             value() {
-                this.files = this.value;
+                this.files = this.value ? this.value : [];
             },
         },
         created() {
-            this.files = this.value;
+            this.files = this.value ? this.value : [];
         },
         methods: {
             handleDrop(e) {
