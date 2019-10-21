@@ -1,50 +1,59 @@
 <template>
-    <div id="drop-area" @drop.prevent="handleDrop" @dragover.prevent>
+    <div @dragover.prevent @drop.prevent="handleDrop" id="drop-area">
+        <label class="v-label">{{this.label}}</label>
         <form ref="form">
-            <input ref="upload" :accept="accept" type="file" :multiple="max !== 1" @change="handleInput">
+            <input :accept="accept" :multiple="max !== 1" @change="handleInput" ref="upload" type="file">
             <v-layout>
                 <v-flex :class="previewClass"
+                        class="preview"
                         pa-1
                         v-for="(file, index) in files"
-                        class="preview"
                         v-if="typeof file.isDeleted !== undefined && file.isDeleted !== true">
-                    <v-badge v-if="canDelete" left color="red">
-                        <div slot="badge" @click="deleteFile(index)">
+                    <v-badge color="red" left v-if="canDelete">
+                        <div @click="deleteFile(index)" slot="badge">
                             <v-icon color="white">fa-trash</v-icon>
                         </div>
                     </v-badge>
-                    <v-img v-if="file.preview !== null"
-                           :src="file.preview"
-                           height="150px"></v-img>
+                    <v-img :src="file.preview"
+                           height="150px"
+                           v-if="file.preview !== null"></v-img>
                     <v-flex v-else>
                         <v-icon style="margin-top:70px;">{{ fileTypeToIcon(file.type)}}</v-icon>
                         <span class="file-name" v-if="typeof file.name !== 'undefined' && file.name !== null">{{file.name}}</span>
                     </v-flex>
                 </v-flex>
-                <v-flex :class="previewClass" pa-1 class="uploadWrapper" v-if="canUploadNewFile">
+                <v-flex :class="previewClass" class="uploadWrapper" pa-1 v-if="canUploadNewFile">
                     <div class="border">
                         <v-btn
+                            :color="this.color"
                             @click="$refs.upload.click()"
-                            color="accent"
                             dark
-                            small
                             fab
+                            small
                         >
                             <v-icon>fa-upload</v-icon>
                         </v-btn>
                     </div>
                 </v-flex>
             </v-layout>
-
+            <v-layout class="error-container">
+                <transition-group name="scroll-y-transition">
+                    <v-flex :key="error" v-for="error in this.errorBucket" v-if="hasInput">
+                        <span class="error--text">{{error}}</span>
+                    </v-flex>
+                </transition-group>
+            </v-layout>
         </form>
     </div>
 </template>
 
 <script>
     import * as EXIF from 'exif-js';
+    import VInput from 'vuetify/lib/components/VInput/VInput.js';
 
     export default {
         name: 'vuetify-upload',
+        extends: VInput,
         data() {
             return {
                 files: [],
@@ -236,7 +245,7 @@
     };
 </script>
 
-<style scoped lang="scss">
+<style lang="scss" scoped>
     input {
         display: none;
     }
@@ -277,5 +286,9 @@
             white-space: nowrap;
             overflow: hidden;
         }
+    }
+
+    .error-container {
+        min-height: 25px;
     }
 </style>
