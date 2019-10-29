@@ -13,7 +13,7 @@
         "file"
     ],
     "author": "Ricardo van Laarhoven",
-    "license": "MIT",
+    "license": "Apache-2.0",
     "bugs": {
         "url": "https://github.com/kingscode/vuetify-upload/issues"
     },
