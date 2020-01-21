@@ -9,4 +9,7 @@ module.exports = {
             new VuetifyLoaderPlugin()
         ],
     },
+    transpileDependencies: [
+        'vuetify',
+    ],
 };
