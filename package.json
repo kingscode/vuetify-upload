@@ -20,7 +20,7 @@
     "main": "dist/vuetify-upload.common.js",
     "homepage": "https://github.com/kingscode/vuetify-upload#readme",
     "scripts": {
-        "serve": "vue-cli-service serve",
+        "serve": "vue-cli-service serve ./playground/main.js",
         "build": "vue-cli-service build --target lib --name vuetify-upload ./src/index.js",
         "test:e2e": "vue-cli-service test:e2e",
         "test:unit": "vue-cli-service test:unit"
