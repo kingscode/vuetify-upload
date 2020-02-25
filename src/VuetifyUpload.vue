@@ -9,6 +9,7 @@
                         v-for="(file, index) in files"
                         v-if="typeof file.isDeleted !== undefined && file.isDeleted !== true">
                     <v-badge color="error" left v-if="canDelete">
+
                         <v-icon @click="deleteFile(index)" slot="badge" color="white">$vuetify.icons.delete</v-icon>
                     </v-badge>
                     <v-img :src="file.preview"
@@ -229,6 +230,7 @@ export default {
                 case 'video/quicktime':
                 case 'video/x-msvideo':
                 case 'video/x-ms-wmv':
+
                     icon = '$vuetify.icons.fileVideo';
             }
             if (icon) {
