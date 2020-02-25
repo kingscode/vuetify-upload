@@ -11,7 +11,7 @@
 
             <v-form ref="form" v-model="valid" class="mt-5">
                 <v-col cols="12" sm="10" offset-sm="1" md="8" offset-md="2" lg="6" offset-lg="3">
-                    <v-subheader class="pa-0">MBO Niveau</v-subheader>
+                    <v-subheader class="pa-0">Vuetify upload</v-subheader>
                     <v-card class="themed-color">
                         <v-card-text>
                             <vuetify-upload
