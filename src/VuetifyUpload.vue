@@ -59,14 +59,15 @@ export default {
     },
     computed: {
         canUploadNewFile() {
-            let count = 0;
-            this.files.forEach((file) => {
-                if (typeof file.isDeleted === 'undefined' || file.isDeleted === false) {
-                    count++;
-                }
-            });
-            return count < this.max;
+            return this.activeFiles.length < this.max;
         },
+        /**
+         * Files that need to be uploaded and files that are already uploaded and don't have the isDeleted prop
+         * the isDeleted prop is for files that are awaited deletion
+         */
+        activeFiles() {
+            return this.files.filter(file => !file.isDeleted);
+        }
     },
     props: {
         max: {
@@ -108,22 +109,26 @@ export default {
         handleDrop(e) {
             if (this.canUploadNewFile) {
                 let files = e.dataTransfer.files;
-                this.handleFiles(files);
+                this.addFiles(files);
             }
         },
         handleInput(e) {
             if (this.canUploadNewFile) {
                 let files = e.target.files;
-                this.handleFiles(files);
+                this.addFiles(files);
             }
         },
-        handleFiles(files) {
+        addFiles(files) {
+            let remaining = this.max - this.activeFiles.length;
             if (files.length > 0) {
                 let fileList = [...files];
                 let promises = [];
 
                 fileList.forEach((file) => {
-                    promises.push(this.filePreview(file));
+                    if (remaining > 0) {
+                        promises.push(this.filePreview(file));
+                        remaining--;
+                    }
                 });
                 Promise.all(promises).then((files) => {
                     this.files.push(...files);
