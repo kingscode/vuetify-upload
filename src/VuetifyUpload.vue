@@ -35,7 +35,7 @@
             </v-row>
             <v-row class="error-container">
                 <transition-group name="scroll-y-transition">
-                    <v-col :key="error" v-for="error in this.errorBucket" v-if="hasInput">
+                    <v-col :key="error" v-for="error in this.errorBucket">
                         <span class="error--text">{{error}}</span>
                     </v-col>
                 </transition-group>
