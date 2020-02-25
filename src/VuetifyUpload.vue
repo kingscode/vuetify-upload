@@ -66,9 +66,7 @@ export default {
          * the isDeleted prop is for files that are awaited deletion
          */
         activeFiles() {
-            return this.files.filter(file => {
-                return file.isDeleted === false || typeof file.isDeleted === 'undefined';
-            })
+            return this.files.filter(file => !file.isDeleted);
         }
     },
     props: {
