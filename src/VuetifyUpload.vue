@@ -3,24 +3,23 @@
         <label class="v-label">{{this.label}}</label>
         <form ref="form">
             <input :accept="accept" :multiple="max !== 1" @change="handleInput" ref="upload" type="file">
-            <v-layout>
-                <v-flex :class="previewClass"
+            <v-row>
+                <v-col :class="previewClass"
                         class="preview"
-                        pa-1
                         v-for="(file, index) in files"
                         v-if="typeof file.isDeleted !== undefined && file.isDeleted !== true">
-                    <v-badge color="red" left v-if="canDelete">
+                    <v-badge color="error" left v-if="canDelete">
                         <v-icon @click="deleteFile(index)" slot="badge" color="white">$vuetify.icons.delete</v-icon>
                     </v-badge>
                     <v-img :src="file.preview"
                            height="150px"
                            v-if="file.preview !== null"></v-img>
-                    <v-flex v-else>
-                        <v-icon style="margin-top:70px;">{{ fileTypeToIcon(file.type)}}</v-icon>
+                    <div v-else>
+                        <v-icon class="my-6" size="40">{{ fileTypeToIcon(file.type)}}</v-icon>
                         <span class="file-name" v-if="typeof file.name !== 'undefined' && file.name !== null">{{file.name}}</span>
-                    </v-flex>
-                </v-flex>
-                <v-flex :class="previewClass" class="uploadWrapper" pa-1 v-if="canUploadNewFile">
+                    </div>
+                </v-col>
+                <v-col :class="previewClass" class="uploadWrapper" v-if="canUploadNewFile">
                     <div class="border">
                         <v-btn
                             :color="this.color"
@@ -32,15 +31,15 @@
                             <v-icon>$vuetify.icons.file</v-icon>
                         </v-btn>
                     </div>
-                </v-flex>
-            </v-layout>
-            <v-layout class="error-container">
+                </v-col>
+            </v-row>
+            <v-row class="error-container">
                 <transition-group name="scroll-y-transition">
-                    <v-flex :key="error" v-for="error in this.errorBucket" v-if="hasInput">
+                    <v-col :key="error" v-for="error in this.errorBucket" v-if="hasInput">
                         <span class="error--text">{{error}}</span>
-                    </v-flex>
+                    </v-col>
                 </transition-group>
-            </v-layout>
+            </v-row>
         </form>
     </div>
 </template>
@@ -84,12 +83,16 @@ export default {
             type: String,
         },
         previewClass: {
-            default: 'xs3',
+            default: 'col-3',
             type: String,
         },
         canDelete: {
             default: false,
             type: Boolean,
+        },
+        color: {
+            default: 'primary',
+            type: String,
         },
     },
     watch: {
@@ -210,14 +213,15 @@ export default {
 
         },
         fileTypeToIcon(type) {
+            let icon;
             switch (type) {
                 case 'image/gif':
                 case 'image/jpeg':
                 case 'image/png':
-                    return this.$vuetify.icons.fileImage;
+                    icon = '$vuetify.icons.fileImage';
                 case 'application/msword':
                 case 'application/vnd.openxmlformats-officedocument.wordprocessingml.document':
-                    return this.$vuetify.icons.fileWord;
+                    icon = '$vuetify.icons.fileWord';
                 case 'video/mp4':
                 case 'video/x-flv':
                 case 'video/MP2T':
@@ -225,10 +229,13 @@ export default {
                 case 'video/quicktime':
                 case 'video/x-msvideo':
                 case 'video/x-ms-wmv':
-                    return this.$vuetify.icons.fileVideo;
-                default:
-                    return this.$vuetify.icons.file;
+                    icon = '$vuetify.icons.fileVideo';
             }
+            if (icon) {
+                console.log('aaa', icon);
+                return icon;
+            }
+            return '$vuetify.icons.file';
         },
         deleteFile(fileIndex) {
             if (this.files[fileIndex].isNewFile) {
@@ -249,7 +256,7 @@ input {
 }
 
 .uploadWrapper {
-    height: 158px;
+    height: 175px;
     text-align: center;
 
     .border {
@@ -267,8 +274,6 @@ input {
     position: relative;
     min-height: 150px;
     text-align: center;
-    border: solid 1px #cccccc;
-    padding: 0;
 
     .v-badge {
         position: absolute;
